@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Android-Communicator</string>
+    <string name="send_request">Send Request</string>
+
+    <string-array name="request_types">
+        <item>GET</item>
+        <item>POST</item>
+    </string-array>
+</resources>
