@@ -1,6 +1,7 @@
 package com.example.android_communicator
 
 import android.content.Context
+import android.content.Intent
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
@@ -9,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import com.example.android_communicator.MainActivity.singleton.mySingletonRequest
 import com.example.android_communicator.databinding.ActivityMainBinding
 import java.io.BufferedReader
 import java.io.DataInputStream
@@ -17,8 +19,13 @@ import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
 import java.nio.charset.StandardCharsets
+import java.util.Collections.singleton
 
 class MainActivity : AppCompatActivity() {
+
+    companion object singleton {
+        var mySingletonRequest: MyRequest? = null
+    }
     private lateinit var binding: ActivityMainBinding
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -43,7 +50,9 @@ class MainActivity : AppCompatActivity() {
         }
         val request:MyRequest? = constructRequest()
         if (request != null) {
-            sendRequest(request)
+            mySingletonRequest = request
+            val intent = Intent(this, ResponseActivity::class.java)
+            this.startActivity(intent)
         }
     }
 
@@ -84,54 +93,6 @@ class MainActivity : AppCompatActivity() {
         myRequest.body = binding.requestBodyInput.text.toString()
         myRequest.headers = binding.headersEditText.text.toString().split(";") as MutableList<String>
         return myRequest
-    }
-
-    private fun sendRequest(myRequest: MyRequest){
-        if(myRequest == null){
-            return
-        }
-        val url = URL(myRequest.url)
-        val connection = url.openConnection() as HttpURLConnection
-        connection.requestMethod = myRequest.type
-        connection.connectTimeout = myRequest.timeOut
-
-        val data: ByteArray = myRequest.body.toByteArray(StandardCharsets.UTF_8)
-        connection.setRequestProperty("charset", "utf-8")
-        connection.setRequestProperty("Content-length", data.size.toString())
-        connection.setRequestProperty("Content-Type", "application/json")
-
-        //set Headers
-        for (headerPair in myRequest.headers){
-            val entry = headerPair.split("=")
-            connection.setRequestProperty(entry[0], entry[1])
-        }
-
-        //Write body
-        try{
-            val outputStream = DataOutputStream(connection.outputStream)
-            outputStream.write(data)
-        }
-        catch(exception: Exception){
-            Toast.makeText(applicationContext,"Connection error...",Toast.LENGTH_SHORT).show()
-        }
-
-        //Get response
-        val inputStream:DataInputStream
-
-        if(connection.responseCode/100 == 2){
-            inputStream = DataInputStream(connection.inputStream)
-        }
-        else{
-            inputStream = DataInputStream(connection.errorStream)
-        }
-
-        val reader = BufferedReader(InputStreamReader(inputStream))
-        val output: String = reader.readLine()
-        binding.responseBody.text = output
-
-        binding.responseCode.text = connection.responseCode.toString()
-        connection.disconnect()
-
     }
 }
 
