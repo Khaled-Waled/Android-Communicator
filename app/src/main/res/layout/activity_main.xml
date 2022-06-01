@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -16,53 +15,50 @@
             android:id="@+id/send_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/send_request"
-            android:padding="20dp"
-            android:textSize="24sp"
             android:layout_marginTop="20dp"
+            android:padding="20dp"
+            android:text="@string/send_request"
+            android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <!-- URL label-->
         <TextView
+            android:id="@+id/URL_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/URL_label"
-            android:text="URL: "
-            app:layout_constraintTop_toBottomOf="@id/send_title"
-            app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="20dp"
-            />
+            android:text="URL: "
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/send_title" />
+
         <EditText
+            android:id="@+id/URL_editText"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:id="@+id/URL_editText"
-            app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="20dp"
-            app:layout_constraintTop_toBottomOf="@+id/URL_label"
-            />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/URL_label" />
 
         <!-- Request type-->
         <TextView
+            android:id="@+id/request_type_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/request_type_label"
+            android:layout_marginStart="20dp"
             android:text="Request Type:"
             app:layout_constraintStart_toEndOf="@+id/URL_editText"
-            android:layout_marginStart="20dp"
-            app:layout_constraintTop_toTopOf="@+id/URL_label"
-            />
+            app:layout_constraintTop_toTopOf="@+id/URL_label" />
 
         <RadioGroup
-            android:layout_width="wrap_content"
             android:id="@+id/request_type_group"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintStart_toStartOf="@id/request_type_label"
-            app:layout_constraintTop_toTopOf="@id/URL_editText"
             app:layout_constraintBottom_toBottomOf="@id/URL_editText"
-            >
+            app:layout_constraintStart_toStartOf="@id/request_type_label"
+            app:layout_constraintTop_toTopOf="@id/URL_editText">
 
             <RadioButton
                 android:id="@+id/option_get"
@@ -81,46 +77,42 @@
 
         <!-- Headers Labels-->
         <TextView
+            android:id="@+id/headers_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/headers_label"
-            android:text="Request Headers (Separated by a semicolon ' ; ' )"
-            app:layout_constraintTop_toBottomOf="@+id/URL_editText"
-            android:layout_marginTop="20dp"
-            app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="20dp"
-            />
+            android:layout_marginTop="20dp"
+            android:text="Request Headers (Separated by a semicolon ' ; ' )"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/URL_editText" />
 
         <EditText
+            android:id="@+id/headers_editText"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:id="@+id/headers_editText"
-            app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="20dp"
-            app:layout_constraintTop_toBottomOf="@+id/headers_label"
-            />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/headers_label" />
 
 
         <!--Request Body-->
         <TextView
+            android:id="@+id/request_body_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/request_body_label"
-            android:text="Request body:"
-            app:layout_constraintTop_toBottomOf="@id/headers_editText"
-            android:layout_marginTop="20dp"
-            app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="20dp"
-            />
+            android:layout_marginTop="20dp"
+            android:text="Request body:"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/headers_editText" />
 
         <EditText
+            android:id="@+id/request_body_input"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:padding="10dp"
             android:gravity="top"
-            android:id="@+id/request_body_input"
-            app:layout_constraintTop_toBottomOf="@+id/request_body_label"
-            />
+            android:padding="10dp"
+            app:layout_constraintTop_toBottomOf="@+id/request_body_label" />
 
 
         <!-- Send Button-->
@@ -131,8 +123,7 @@
             android:text="Send Request"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/request_body_input"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/request_body_input" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+</ScrollView>

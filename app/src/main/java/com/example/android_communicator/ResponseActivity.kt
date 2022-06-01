@@ -14,7 +14,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 import java.nio.charset.StandardCharsets
 
-class ResponseActivity : AppCompatActivity(){
+class ResponseActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityResponseBinding
 
@@ -28,8 +28,8 @@ class ResponseActivity : AppCompatActivity(){
     }
 
 
-    private fun sendRequest(myRequest: MyRequest){
-        if(myRequest == null){
+    private fun sendRequest(myRequest: MyRequest) {
+        if (myRequest == null) {
             return
         }
         val url = URL(myRequest.url)
@@ -43,27 +43,25 @@ class ResponseActivity : AppCompatActivity(){
         connection.setRequestProperty("Content-Type", "application/json")
 
         //set Headers
-        for (headerPair in myRequest.headers){
+        for (headerPair in myRequest.headers) {
             val entry = headerPair.split("=")
             connection.setRequestProperty(entry[0], entry[1])
         }
 
         //Write body
-        try{
+        try {
             val outputStream = DataOutputStream(connection.outputStream)
             outputStream.write(data)
-        }
-        catch(exception: Exception){
-            Toast.makeText(applicationContext,"Connection error...", Toast.LENGTH_SHORT).show()
+        } catch (exception: Exception) {
+            Toast.makeText(applicationContext, "Connection error...", Toast.LENGTH_SHORT).show()
         }
 
         //Get response
         val inputStream: DataInputStream
 
-        if(connection.responseCode/100 == 2){
+        if (connection.responseCode / 100 == 2) {
             inputStream = DataInputStream(connection.inputStream)
-        }
-        else{
+        } else {
             inputStream = DataInputStream(connection.errorStream)
         }
 

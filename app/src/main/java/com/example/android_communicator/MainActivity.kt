@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity() {
     companion object singleton {
         var mySingletonRequest: MyRequest? = null
     }
+
     private lateinit var binding: ActivityMainBinding
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -36,19 +37,18 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val sendButton = binding.sendButton
-        sendButton.setOnClickListener{
+        sendButton.setOnClickListener {
             sendClicked()
         }
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    private fun sendClicked()
-    {
-        if(!isDeviceOnline(this)){
-            Toast.makeText(applicationContext,"Device is offline",Toast.LENGTH_SHORT).show()
+    private fun sendClicked() {
+        if (!isDeviceOnline(this)) {
+            Toast.makeText(applicationContext, "Device is offline", Toast.LENGTH_SHORT).show()
             return
         }
-        val request:MyRequest? = constructRequest()
+        val request: MyRequest? = constructRequest()
         if (request != null) {
             mySingletonRequest = request
             val intent = Intent(this, ResponseActivity::class.java)
@@ -57,41 +57,44 @@ class MainActivity : AppCompatActivity() {
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    private fun isDeviceOnline(context: Context):Boolean{
-        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    private fun isDeviceOnline(context: Context): Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val network = connectivityManager.activeNetwork
-        if(network == null)
+        if (network == null)
             return false
 
         val activeNetwork = connectivityManager.getNetworkCapabilities(network)
-        if(activeNetwork == null)
+        if (activeNetwork == null)
             return false
 
         return (activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
                 activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR))
     }
+
     private fun constructRequest(): MyRequest? {
         val myRequest = MyRequest()
 
         //invalidate input if a field is empty
-        if( binding.URLEditText.text.toString() == "" ||
+        if (binding.URLEditText.text.toString() == "" ||
             binding.requestBodyInput.text.toString() == "" ||
-            binding.headersEditText.text.toString() == ""   ){
-            Toast.makeText(applicationContext,"Please fill all fields!",Toast.LENGTH_SHORT).show()
+            binding.headersEditText.text.toString() == ""
+        ) {
+            Toast.makeText(applicationContext, "Please fill all fields!", Toast.LENGTH_SHORT).show()
             return null
         }
 
         //take input
         myRequest.url = binding.URLEditText.text.toString()
-        myRequest.type = when (binding.requestTypeGroup.checkedRadioButtonId)
-        {
-            R.id.option_get ->  "GET"
+        myRequest.type = when (binding.requestTypeGroup.checkedRadioButtonId) {
+            R.id.option_get -> "GET"
             R.id.option_post -> "POST"
             else -> "GET"
         }
         myRequest.timeOut = 10000 //= 10 seconds
         myRequest.body = binding.requestBodyInput.text.toString()
-        myRequest.headers = binding.headersEditText.text.toString().split(";") as MutableList<String>
+        myRequest.headers =
+            binding.headersEditText.text.toString().split(";") as MutableList<String>
         return myRequest
     }
 }
